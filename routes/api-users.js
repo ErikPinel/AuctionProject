@@ -3,6 +3,64 @@ const Users = require("../models/users");
 const router = express.Router();
 const UsersSchema = require("../middleWare/userSchema");
 const { message } = require("../middleWare/userSchema");
+
+function encrypt(id,email)
+{
+  let encrypted="";
+  let code;
+  
+
+
+  for(let i=0;i<email.length/3;i++)
+  {
+    idArr=id.split("")
+    for(let j=0;j<id.length;j++)
+    {
+      idArr.map((e,index)=>{ String.fromCharCode(id.charCodeAt(0)+email.length+30)=='@'? idArr[j]=String.fromCharCode(id.charCodeAt(0)+email.length+30):""})
+
+    }
+    
+  
+
+  }
+  idArr.join("")
+console.log(idArr)
+const encrypt=idArr;
+  return encrypt;
+
+}
+
+
+
+
+function decrypt(id,email)
+{
+  idArr=id.split("")
+ 
+  for(let i=0;i<email.length;i++)
+  {
+    
+    for(let j=0;j<id.length;j++)
+    {
+     
+      console.log(String.fromCharCode(id.charCodeAt(j)))
+      idArr.map((e,index)=>{idArr[j]=String.fromCharCode( id.charCodeAt(j)-email.length+30)})
+    }
+    
+  
+
+  }
+  idArr.join("")
+  console.log("idArr")
+console.log(idArr)
+const decrypt=idArr;
+  return decrypt;
+
+}
+
+
+
+
 router.get("/users", (req, res, next) => {
   Users.find({})
     .then((data) => res.json(data))
@@ -28,6 +86,8 @@ router.post("/users/register", (req, res, next) => {
 });
 
 router.post("/users/login", (req, res, next) => {
+  console.log("s")
+  
   const {email,password} = req.body;
   Users.findOne({ email: email,password:password }).then((data) =>
     data
@@ -38,9 +98,20 @@ router.post("/users/login", (req, res, next) => {
 
 router.post("/users/logged", (req, res, next) => {
   let id = req.body.user;
-
+ 
+ 
   Users.findOne({ _id: id }).then((data) =>
  data ? res.json({"status":"logged","user":data})
+  : res.json({"status":"user id dose not match"})
+  );
+});
+
+router.post("/users/forgotPassword", (req, res, next) => {
+  console.log("A")
+  let email = req.body.email;
+
+  Users.findOne({ email: email }).then((data) =>
+ data ? res.json({"status":"logged","user":data.password})
   : res.json({"status":"user id dose not match"})
   );
 });
