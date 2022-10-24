@@ -62,6 +62,7 @@ const decrypt=idArr;
 
 
 router.get("/users", (req, res, next) => {
+  console.log("sd")
   Users.find({})
     .then((data) => res.json(data))
     .catch(next);
@@ -74,8 +75,9 @@ router.get("/users/?:id", (req, res, next) => {
 });
 
 router.post("/users/register", (req, res, next) => {
+  console.log("sds***********************************************************d")
   let email = req.body.email;
-
+ console.log(req.body.phone)
   Users.findOne({ email: email }).then((data) =>
     data
       ? res.json("email alredy exist")
@@ -99,7 +101,7 @@ router.post("/users/login", (req, res, next) => {
 router.post("/users/logged", (req, res, next) => {
   let id = req.body.user;
  
- 
+
   Users.findOne({ _id: id }).then((data) =>
  data ? res.json({"status":"logged","user":data})
   : res.json({"status":"user id dose not match"})
@@ -122,7 +124,7 @@ router.post("/users/Bought", (req, res, next) => {
 
   Users.findOne({ _id: id }).then((data) =>
  data ? res.json({"status":"sucsses","bought":data.itemsBought})
-  : res.json({"status":"user id dose not match"})
+  : res.json({"status":"user id dose not match","bought":null})
   );
 });
 
@@ -136,6 +138,7 @@ router.post("/users/Soled", (req, res, next) => {
 });
 
 router.delete("/users/?:id", (req, res, next) => {
+  console.log("req.params.id" )
   Users.findOneAndDelete({ _id: req.params.id })
     .then((data) => res.json(data))
     .catch(next);
@@ -169,7 +172,7 @@ router.patch("/users/addBought/:id", (req, res) => {
 router.patch("/users/addSold/:id", (req, res) => {
   let id = req.params.id;
   let itemsSoled = req.body.itemsSoled;
-
+console.log(itemsSoled)
   Users.findByIdAndUpdate(id, { $set: { itemsSoled: itemsSoled } }, { new: true }).then(
     (updatedUser) => {
       res.send("User updated by id through PATCH");
@@ -185,27 +188,27 @@ router.patch("/users/addSold/:id", (req, res) => {
 
 
 
-router.post(
-  "/",
-  async (req, res, next) => {
-    const { body } = req;
-    const result = UsersSchema.validate(body);
+// router.post(
+//   "/",
+//   async (req, res, next) => {
+//     const { body } = req;
+//     const result = UsersSchema.validate(body);
 
-    const { value, error } = result;
-    const valid = error == null;
+//     const { value, error } = result;
+//     const valid = error == null;
 
-    if (!valid) {
-      res
-        .status(422)
-        .send()
-        .json({
-          message: "invalid reques",
-          data: value,
-          erorr: `this is your error ${error}`,
-        });
-    }
-  },
-  function (req, res, next) {}
-);
+//     if (!valid) {
+//       res
+//         .status(422)
+//         .send()
+//         .json({
+//           message: "invalid reques",
+//           data: value,
+//           erorr: `this is your error ${error}`,
+//         });
+//     }
+//   },
+//   function (req, res, next) {}
+// );
 
 module.exports = router;

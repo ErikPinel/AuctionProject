@@ -131,7 +131,7 @@ router.get("/itemmen/?:id", (req, res, next) => {
 router.post("/itemmen", (req, res, next) => {
   req.body 
     ? itemMen.create(req.body)
-        .then((data) => res.json(data))
+        .then((data) =>data? res.json({item:data,status:"Item added successfully"}):res.json({item:data,status:"Unccessfull upload"}))
         .catch(next)
     : res.json({ error: "invalid input" });
 });

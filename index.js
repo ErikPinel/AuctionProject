@@ -2,6 +2,12 @@ const express =require('express');
 const mongoose  = require('mongoose');
 const app=express();
 const port =5000;
+var cors = require('cors')
+
+
+app.use(cors())
+
+
 const itemkidsRoute=require('./routes/api-itemKids')
 const itemMenRoute=require('./routes/api-itemMen')
 const itemWomenRoute=require('./routes/api-itemWomen')
@@ -21,10 +27,12 @@ mongoose.connect(process.env.DB,{useNewUrlParser : true})
 
 
 app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Methods', '*');
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
   });
+  app.use(cors())
   app.use(bodyParser.json());
   
 

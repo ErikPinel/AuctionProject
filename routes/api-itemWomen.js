@@ -132,8 +132,8 @@ router.post("/itemwomem", (req, res, next) => {
   console.log("a")
   req.body 
     ? itemWomen.create(req.body)
-        .then((data) => res.json(data))
-        .catch(next)
+    .then((data) =>data? res.json({item:data,status:"Item added successfully"}):res.json({item:data,status:"Unccessfull upload"}))
+    .catch(next)
     : res.json({ error: "invalid input" });
 });
 
