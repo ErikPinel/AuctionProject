@@ -30,7 +30,11 @@ const UsersSchema=mongoose.Schema({
     {
         type:Array,
         required:true
-    }
+    },
+    
+    isBought:Boolean,
+
+    isSoled:Boolean
    
 });
 

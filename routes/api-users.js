@@ -61,8 +61,76 @@ const decrypt=idArr;
 
 
 
+
+function totalSpent(items)
+{
+
+let spentMen=0;
+let spentWomen=0;
+let spentKids=0;
+
+
+
+for(let i=0; i<items.length;i++)
+{
+  if(items[i].section=="Men-section")
+   { spentMen+=items[i].offers[items[i].offers.length-1].currentBid}
+    else if(items[i].section=="Women-section")
+    {spentWomen+=items[i].offers[items[i].offers.length-1].currentBid}
+
+    else
+    {spentKids+=items[i].offers[items[i].offers.length-1].currentBid}
+
+
+
+}
+
+console.log("spentKids:"+spentKids+"-  spentWomen:  "+spentWomen+"   spentMen:"+spentMen)
+allSpent ={spentMen,spentWomen,spentKids}
+
+return allSpent;
+}
+
+
+
+
+function totalRevanue(items)
+{
+
+let revanueMen=0;
+let revanueWomen=0;
+let revanueKids=0;
+
+
+
+for(let i=0; i<items.length;i++)
+{
+  if(items[i].section=="Men-section")
+   { revanueMen+=items[i].offers[items[i].offers.length-1].currentBid}
+    else if(items[i].section=="Women-section")
+    {revanueWomen+=items[i].offers[items[i].offers.length-1].currentBid}
+
+    else
+    {revanueKids+=items[i].offers[items[i].offers.length-1].currentBid}
+
+
+
+}
+
+console.log("revanueKids:"+revanueKids+"-  revanueWomen:  "+revanueWomen+"   revanueMen:"+revanueMen)
+allRevanues ={revanueMen,revanueWomen,revanueKids}
+
+return allRevanues;
+}
+
+
+
+
+
+
+
 router.get("/users", (req, res, next) => {
-  console.log("sd")
+  
   Users.find({})
     .then((data) => res.json(data))
     .catch(next);
@@ -119,22 +187,34 @@ router.post("/users/forgotPassword", (req, res, next) => {
 });
 
 
-router.post("/users/Bought", (req, res, next) => {
-  let id = req.body.user;
 
-  Users.findOne({ _id: id }).then((data) =>
- data ? res.json({"status":"sucsses","bought":data.itemsBought})
+router.post("/users/Bought", (req, res, next) => {
+  const { id } = req.body;
+  let allRevanues;
+  Users.findOne({ _id: id }).then((data) =>{allSpent=totalSpent(data.itemsBought),
+ data ? res.json({"status":"sucsses","revanue":   [
+  { value:allSpent.spentKids, id: "Kids" },
+  { value:allSpent.spentWomen, id: "Women" },
+  { value: allSpent.spentMen, id: "Men" },
+],"TotalItemsBought":data.itemsBought.length})
+
   : res.json({"status":"user id dose not match","bought":null})
-  );
+ } );
 });
 
 router.post("/users/Soled", (req, res, next) => {
-  let id = req.body.user;
+  const { id } = req.body;
+  let allRevanues;
+  console.log("sssss")
+  Users.findOne({ _id: id }).then((data) =>{allRevanues=totalRevanue(data.itemsSoled),
+ data ? res.json({"status":"sucsses",revanue:[
+  { value:allRevanues.revanueKids, id: "Kids" },
+  { value:allRevanues.revanueWomen, id: "Women" },
+  { value: allRevanues.revanueMen, id: "Men" },
+],"TotalItemsSoled":data.itemsSoled.length})
 
-  Users.findOne({ _id: id }).then((data) =>
- data ? res.json({"status":"sucsses","soled":data.itemsSoled})
-  : res.json({"status":"user id dose not match"})
-  );
+  : res.json({"status":"user id dose not match","bought":null})
+ } );
 });
 
 router.delete("/users/?:id", (req, res, next) => {
@@ -159,7 +239,7 @@ router.patch("/users/addBought/:id", (req, res) => {
   let id = req.params.id;
   let itemsBought = req.body.itemsBought;
 
-  Users.findByIdAndUpdate(id, { $set: { itemsBought: itemsBought } }, { new: true }).then(
+  Users.findByIdAndUpdate(id, { $set: { itemsBought: itemsBought,isBought:true } }, { new: true }).then(
     (updatedUser) => {
       res.send("User updated by id through PATCH");
     }
@@ -172,14 +252,61 @@ router.patch("/users/addBought/:id", (req, res) => {
 router.patch("/users/addSold/:id", (req, res) => {
   let id = req.params.id;
   let itemsSoled = req.body.itemsSoled;
-console.log(itemsSoled)
-  Users.findByIdAndUpdate(id, { $set: { itemsSoled: itemsSoled } }, { new: true }).then(
+console.log(id)
+  Users.findByIdAndUpdate(id, { $set: { itemsSoled: itemsSoled,isSoled:true} }, { new: true }).then(
     (updatedUser) => {
       res.send("User updated by id through PATCH");
     }
   );
 });
 
+router.patch("/users/removeIsSoled/:id", (req, res) => {
+  let id = req.params.id;
+  Users.findByIdAndUpdate(id, { $set: {isSoled:false} }, { new: true }).then(
+    (updatedUser) => {
+      res.send("User updated by id through PATCH");
+    }
+  );
+});
+
+router.patch("/users/removeIsBought/:id", (req, res) => {
+  let id = req.params.id;
+  Users.findByIdAndUpdate(id, { $set: {isBought:false} }, { new: true }).then(
+    (updatedUser) => {
+      res.send("User updated by id through PATCH");
+    }
+  );
+});
+
+
+
+
+
+
+
+
+
+
+
+router.post("/users/getBought", (req, res, next) => {
+  const { id } = req.body;
+  Users.findOne({ _id: id }).then((data) =>{
+ data ? res.json({"status":"sucsses","items":data.itemsBought })
+
+  : res.json({"status":"user id dose not match","bought":null})
+ } );
+});
+
+
+
+router.post("/users/getSoled", (req, res, next) => {
+  const { id } = req.body;
+  Users.findOne({ _id: id }).then((data) =>{
+ data ? res.json({"status":"sucsses","items":data.itemsSoled })
+
+  : res.json({"status":"user id dose not match","bought":null})
+ } );
+});
 
 
 
