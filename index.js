@@ -58,7 +58,7 @@ app.use((err,req,res,next)=>{
 
 
 
-app.listen("https://violet-kangaroo-suit.cyclic.app",()=>{
+app.listen(port,()=>{
 console.log("server is runing on port " + port)
 
 
