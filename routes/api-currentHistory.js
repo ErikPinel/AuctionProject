@@ -90,7 +90,7 @@ function chartSell(items) {
 
   function chartEarnings(items) {
    
-    console.log(items.length);
+    
     return items.length;
   }
   
@@ -202,7 +202,7 @@ router.post("/totalBids", async (req, res, next) => {
     
       
       .then(() => {
-        console.log(_MEN+_KIDS+_WOMEN+"ss"); res.json(
+        res.json(
          {total:_MEN+_KIDS+_WOMEN}
         );
       })
@@ -261,7 +261,7 @@ router.post("/chart", async (req, res, next) => {
       _WOMEN = chartSell(data);
     })
     .then(() => {
-      console.log(_KIDS + _WOMEN + _MEN),
+     
         res.json({
           total: _KIDS + _WOMEN + _MEN,
           arr: [

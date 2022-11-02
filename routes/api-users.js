@@ -24,7 +24,6 @@ function encrypt(id,email)
 
   }
   idArr.join("")
-console.log(idArr)
 const encrypt=idArr;
   return encrypt;
 
@@ -43,7 +42,6 @@ function decrypt(id,email)
     for(let j=0;j<id.length;j++)
     {
      
-      console.log(String.fromCharCode(id.charCodeAt(j)))
       idArr.map((e,index)=>{idArr[j]=String.fromCharCode( id.charCodeAt(j)-email.length+30)})
     }
     
@@ -51,8 +49,6 @@ function decrypt(id,email)
 
   }
   idArr.join("")
-  console.log("idArr")
-console.log(idArr)
 const decrypt=idArr;
   return decrypt;
 
@@ -85,7 +81,6 @@ for(let i=0; i<items.length;i++)
 
 }
 
-console.log("spentKids:"+spentKids+"-  spentWomen:  "+spentWomen+"   spentMen:"+spentMen)
 allSpent ={spentMen,spentWomen,spentKids}
 
 return allSpent;
@@ -117,7 +112,6 @@ for(let i=0; i<items.length;i++)
 
 }
 
-console.log("revanueKids:"+revanueKids+"-  revanueWomen:  "+revanueWomen+"   revanueMen:"+revanueMen)
 allRevanues ={revanueMen,revanueWomen,revanueKids}
 
 return allRevanues;
@@ -143,9 +137,7 @@ router.get("/users/?:id", (req, res, next) => {
 });
 
 router.post("/users/register", (req, res, next) => {
-  console.log("sds***********************************************************d")
   let email = req.body.email;
- console.log(req.body.phone)
   Users.findOne({ email: email }).then((data) =>
     data
       ? res.json("email alredy exist")
@@ -156,7 +148,6 @@ router.post("/users/register", (req, res, next) => {
 });
 
 router.post("/users/login", (req, res, next) => {
-  console.log("s")
   
   const {email,password} = req.body;
   Users.findOne({ email: email,password:password }).then((data) =>
@@ -177,7 +168,6 @@ router.post("/users/logged", (req, res, next) => {
 });
 
 router.post("/users/forgotPassword", (req, res, next) => {
-  console.log("A")
   let email = req.body.email;
 
   Users.findOne({ email: email }).then((data) =>
@@ -205,7 +195,6 @@ router.post("/users/Bought", (req, res, next) => {
 router.post("/users/Soled", (req, res, next) => {
   const { id } = req.body;
   let allRevanues;
-  console.log("sssss")
   Users.findOne({ _id: id }).then((data) =>{allRevanues=totalRevanue(data.itemsSoled),
  data ? res.json({"status":"sucsses",revanue:[
   { value:allRevanues.revanueKids, id: "Kids" },
@@ -218,7 +207,6 @@ router.post("/users/Soled", (req, res, next) => {
 });
 
 router.delete("/users/?:id", (req, res, next) => {
-  console.log("req.params.id" )
   Users.findOneAndDelete({ _id: req.params.id })
     .then((data) => res.json(data))
     .catch(next);
@@ -252,7 +240,6 @@ router.patch("/users/addBought/:id", (req, res) => {
 router.patch("/users/addSold/:id", (req, res) => {
   let id = req.params.id;
   let itemsSoled = req.body.itemsSoled;
-console.log(id)
   Users.findByIdAndUpdate(id, { $set: { itemsSoled: itemsSoled,isSoled:true} }, { new: true }).then(
     (updatedUser) => {
       res.send("User updated by id through PATCH");

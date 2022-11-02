@@ -129,7 +129,7 @@ router.get("/itemkids/?:id", (req, res, next) => {
 
 
 router.post("/itemkids", (req, res, next) => {
-  console.log(req.body)
+  
   req.body 
     ? itemKids.create(req.body)
     .then((data) =>data? res.json({item:data,status:"Item added successfully"}):res.json({item:data,status:"Unccessfull upload"}))
@@ -184,7 +184,7 @@ router.delete("/itemkids/?:id", (req, res, next) => {
 
 
 router.patch('/itemkids/:id/', (req, res) => {
-  console.log("kid")
+ 
   let id = req.params.id;
   let {offers,upVotes} = req.body
  

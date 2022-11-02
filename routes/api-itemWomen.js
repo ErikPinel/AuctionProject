@@ -129,7 +129,7 @@ router.get("/itemwomen/?:id", (req, res, next) => {
 
 
 router.post("/itemwomem", (req, res, next) => {
-  console.log("a")
+  
   req.body 
     ? itemWomen.create(req.body)
     .then((data) =>data? res.json({item:data,status:"Item added successfully"}):res.json({item:data,status:"Unccessfull upload"}))
