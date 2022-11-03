@@ -157,11 +157,11 @@ router.post("/users/login", (req, res, next) => {
   );
 });
 
-router.post("/users/logged", (req, res, next) => {
+router.post("/users/logged", async  (req, res, next) => {
   let id = req.body.user;
  
 
-  Users.findOne({ _id: id }).then((data) =>
+ await Users.findOne({ _id: id }).then((data) =>
  data ? res.json({"status":"logged","user":data})
   : res.json({"status":"user id dose not match"})
   );
