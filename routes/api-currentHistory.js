@@ -95,20 +95,20 @@ function chartSell(items) {
   }
   
 
-router.post("/currentBid", (req, res, next) => {
-  const { id } = req.body;
-  itemMen
+router.post("/currentBid", async (req, res, next) => {
+  const {id} = req.body;
+ await itemMen
     .find({})
     .then((data) => {
       _MEN = finditemsWithIDBuyer(data, id, "men");
     })
     .then(
-      itemkids
+     await itemkids
         .find({})
         .then((data) => (_KIDS = finditemsWithIDBuyer(data, id, "kids")))
     )
     .then(
-      itemWomen
+      await itemWomen
         .find({})
         .then((data) => (_WOMEN = finditemsWithIDBuyer(data, id, "women")))
     )
