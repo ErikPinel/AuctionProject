@@ -159,13 +159,12 @@ router.post("/users/login", (req, res, next) => {
 
 router.post("/users/logged", async  (req, res, next) => {
   let id = req.body.user;
- id?
+ 
 
  await Users.findOne({ _id: id }).then((data) =>
  data ? res.json({"status":"logged","user":data})
   : res.json({"status":"user id dose not match"})
-  ):res.json({"status":"user id dose not match"})
-
+  );
 });
 
 router.post("/users/forgotPassword", (req, res, next) => {
