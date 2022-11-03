@@ -58,7 +58,7 @@ app.use((err,req,res,next)=>{
 
 
 
-app.listen("https://meek-cobbler-6e5c04.netlify.app",()=>{
+app.listen(port,()=>{
 console.log("server is runing on port " + port)
 
 
